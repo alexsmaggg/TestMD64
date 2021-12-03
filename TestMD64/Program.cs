@@ -51,8 +51,9 @@ namespace TestMD64
             Console.WriteLine($"Recieve device information elements.Handle \"hDevInfo\": {hDevInfo}");
 
             ifData = new SP_DEVICE_INTERFACE_DATA();
-            ifData.cbSize = (uint)Marshal.SizeOf(ifData);
-            ifData.Flags = 0;           
+            ifData.cbSize = (uint)Marshal.SizeOf(ifData);           
+            Console.WriteLine($"ifData.cbSize : {ifData.cbSize}");
+            ifData.Flags = 1;           
             ifData.Reserved = IntPtr.Zero;
             bool result2 = Win32.SetupDiEnumDeviceInterfaces(hDevInfo, IntPtr.Zero, ref deviceGuid, 0, ifData);
             if (result2 == false)
@@ -72,6 +73,7 @@ namespace TestMD64
             try
             {
                 uint size = needed;
+                Console.WriteLine($"needed size: {needed} ");
                 Marshal.WriteInt32(DeviceInterfaceDetailData, (IntPtr.Size == 4) ? (4 + Marshal.SystemDefaultCharSize) : 8);
                 bool result4 = Win32.SetupDiGetDeviceInterfaceDetail(hDevInfo, ifData, DeviceInterfaceDetailData, size, out needed, null);
                 if (result4 == false)
